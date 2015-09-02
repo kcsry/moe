@@ -25,6 +25,7 @@
         var locallyStarred = m.prop(Storage.get("starred") || {});
 
         function loadStarred() {
+            if(!Config.starred_url) return;
             ajax({
                 method: "GET",
                 url: Config.starred_url,
@@ -50,9 +51,11 @@
             locallyStarred(stars);
             Storage.set("starred", stars);
             if (!!Config.logged_in) {
+                const url = (newStarredness ? Config.star_url : Config.unstar_url);
+                if(!url) return;
                 ajax({
                     method: "POST",
-                    url: (newStarredness ? Config.star_url : Config.unstar_url) + "?event=" + Config.event_slug + "&program_id=" + programId,
+                    url: url + "?event=" + Config.event_slug + "&program_id=" + programId,
                     data: "true"
                 });
             }
