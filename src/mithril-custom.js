@@ -6,12 +6,14 @@
 // without namespaces
 // without custom element support ("is")
 // without trust
+// with a shorter list of void elements
+// with less error handling
 
 var m = (function app(window, undefined) {
 	var OBJECT = "[object Object]", ARRAY = "[object Array]", STRING = "[object String]", FUNCTION = "function";
 	var type = {}.toString;
 	var parser = /(?:(^|#|\.)([^#\.\[\]]+))|(\[.+?\])/g, attrParser = /\[(.+?)(?:=("|'|)(.*?)\2)?\]/;
-	var voidElements = /^(AREA|BASE|BR|COL|COMMAND|EMBED|HR|IMG|INPUT|KEYGEN|LINK|META|PARAM|SOURCE|TRACK|WBR)$/;
+	var voidElements = /^(BR|HR|INPUT|IMG)$/;
 
 	// caching commonly used variables
 	var $document, $location, $requestAnimationFrame, $cancelAnimationFrame;
@@ -47,7 +49,7 @@ var m = (function app(window, undefined) {
 		var classAttrName = "class" in attrs ? "class" : "className";
 		var cell = {tag: "div", attrs: {}};
 		var match, classes = [];
-		if (type.call(args[0]) != STRING) throw new Error("selector in m(selector, attrs, children) should be a string")
+		args[0] = "" + args[0];
 		while (match = parser.exec(args[0])) {
 			if (match[1] === "" && match[2]) cell.tag = match[2];
 			else if (match[1] === "#") cell.attrs.id = match[2];
@@ -431,7 +433,6 @@ var m = (function app(window, undefined) {
 	var nodeCache = [], cellCache = {};
 	m.render = function(root, cell, forceRecreation) {
 		var configs = [];
-		if (!root) throw new Error("Please ensure the DOM element exists before rendering a template into it.");
 		var id = getCellCacheKey(root);
 		var isDocumentRoot = root === $document;
 		var node = isDocumentRoot || root === $document.documentElement ? documentNode : root;
