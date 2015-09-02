@@ -84,6 +84,7 @@ function preprocessProgram(program) {
         program.weekday = Kit.getWeekday(program.start);
         program.startTimeStr = Kit.formatTime(program.start);
         program.endTimeStr = Kit.formatTime(program.end);
+        program.plainDescription = program.description.replace(/<.+?>/g, ' ');
         program._cached = true;
     }
     return program;
@@ -237,7 +238,7 @@ function getProgramTableContent(programs) {
         ]));
         if(expandedProgram() === program.identifier) {
             out.push(m("tr", [
-                m("td", {colspan: 4}, m("div.description", program.description.replace(/<.+?>/g, ' ')))
+                m("td", {colspan: 4}, m("div.description", program.plainDescription))
             ]))
         }
     });
