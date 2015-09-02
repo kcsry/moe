@@ -283,7 +283,10 @@ function view() {
             ])
         ]),
         m("div#wrap", [
-            (programs.length ? m("table", {id: "schedule"}, getProgramTableContent(programs)) : m("div.no-results", "Ei tuloksia :("))
+            (programs.length ?
+                m("table", {id: "schedule"}, getProgramTableContent(programs)) : 
+                m("div.no-results", (scheduleData().length ? "Ei tuloksia :(" : "Ladataan..."))
+            )
         ])
     ]);
 }
