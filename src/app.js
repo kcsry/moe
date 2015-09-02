@@ -137,7 +137,9 @@ function controller() {
 }
 
 function getSearchFilterPredicate(searchString) {
-    var searchBits = (searchString || "")
+    searchString = (searchString || "");
+    if(!searchString.length) return null;
+    const searchBits = searchString
         .split(/\s+/)
         .filter((bit) => bit.length > 0)
         .map((bit) => new RegExp(Kit.escapeRegExp(bit), "i"));
