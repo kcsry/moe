@@ -73,6 +73,7 @@ var search = m.prop(Storage.get("search") || "");
 var filterLocation = m.prop("-");
 var filterKindDisplay = m.prop("-");
 var expandedProgram = m.prop(null);
+var facetCache = {};
 
 function preprocessProgram(program) {
     if (!program._cached) {
@@ -89,6 +90,7 @@ function preprocessProgram(program) {
 }
 
 function preprocessScheduleData(data) {
+    facetCache = {}; // clear facet cache when we're (re)loading data
     data.forEach(preprocessProgram);
     return data.sort(
         (ea, eb) => Kit.cmp(ea.start_time, eb.start_time) || Kit.cmp(ea.location, eb.location)
@@ -165,7 +167,10 @@ function getFilterPredicate() {
 };
 
 function buildFilterBox(label, property, prop) {
-    var facets = Kit.uniq(Kit.pluck(scheduleData(), property));
+    var facets = facetCache[property];
+    if(facets === undefined) {
+        facetCache[property] = facets = Kit.uniq(Kit.pluck(scheduleData(), property));
+    }
     return m("select.filter",
         {
             onchange: m.withAttr("value", prop),
