@@ -33,7 +33,8 @@ The schedule JSON format should be approximately as follows.
     "kind_display": "Erikoisohjelma",  // human-readable "kind".
     "identifier": "avajaiset",  // unique identifier for the program (used for starring, etc)
     "location_slug": "paasali",  // slug form of the location above
-    "end_time": "2015-06-05T18:00:00+03:00"  // ISO8601 end time
+    "end_time": "2015-06-05T18:00:00+03:00"  // ISO8601 end time,
+    "presenter": "Teppo & Jussi",  // Optional freeform string of presenter(s) for the program
   },
   // ... moar programs ...
 ]
